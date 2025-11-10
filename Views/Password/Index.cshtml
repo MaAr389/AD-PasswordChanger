@@ -1,0 +1,44 @@
+@model ADPasswordChanger.Models.ChangePasswordViewModel
+
+@{
+    ViewData["Title"] = "Passwort ändern";
+}
+
+<h2>Passwort ändern</h2>
+<form asp-action="ChangePassword" method="post">
+    <div>
+        <label for="Username">Benutzername (AD-Konto):</label>
+        <input asp-for="Username" />
+        <span asp-validation-for="Username" class="text-danger"></span>
+    </div>
+    <div>
+        <label for="OldPassword">Altes Passwort:</label>
+        <input asp-for="OldPassword" type="password" />
+        <span asp-validation-for="OldPassword" class="text-danger"></span>
+    </div>
+    <div>
+        <label for="NewPassword">Neues Passwort:</label>
+        <input asp-for="NewPassword" type="password" />
+        <span asp-validation-for="NewPassword" class="text-danger"></span>
+    </div>
+    <div>
+        <button type="submit">Passwort ändern</button>
+        <button type="button" onclick="generatePassword()">Passwort generieren</button>
+    </div>
+    <div>
+        <input type="text" id="generatedPassword" readonly />
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        function generatePassword() {
+            fetch('/Password/GeneratePassword')
+                .then(response => response.text())
+                .then(pass => {
+                    document.getElementById('generatedPassword').value = pass;
+                    document.getElementById('NewPassword').value = pass;
+                });
+        }
+    </script>
+}
